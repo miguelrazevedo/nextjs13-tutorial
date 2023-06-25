@@ -1,14 +1,12 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import { Post } from "../../../../@types/post";
+import { Post } from "../../../@types/post";
 import { notFound } from "next/navigation";
 
 // Get new data at every single request
-async function getPostById(id: number): Promise<Post> {
-    const res = await fetch(
-        `https://jsonplaceholder.typicode.com/posts/${id}`,
-        { cache: "no-store" }
-    );
+async function getPostById(id: string): Promise<Post> {
+    const res = await fetch(`http://localhost:3000/api/posts/${id}`);
+
     if (!res.ok) {
         // Return not found page from Next.js
         return notFound();
@@ -17,7 +15,7 @@ async function getPostById(id: number): Promise<Post> {
     return res.json();
 }
 export default async function BlogPost({ params }: { params: { id: string } }) {
-    const post = await getPostById(Number.parseInt(params.id));
+    const post = await getPostById(params.id);
     return (
         <div className={styles.container}>
             <div className={styles.top}>
@@ -35,7 +33,7 @@ export default async function BlogPost({ params }: { params: { id: string } }) {
                                 className={styles.profilePic}
                             />
                         </div>
-                        <span>By userId {post.userId}</span>
+                        <span>By userId {post.username}</span>
                     </div>
                 </div>
                 <div className={styles.imgContainer}>
@@ -49,7 +47,7 @@ export default async function BlogPost({ params }: { params: { id: string } }) {
             </div>
             <div className={styles.bottom}>
                 <h2>Description</h2>
-                <p>{post.body}</p>
+                <p>{post.description}</p>
             </div>
         </div>
     );

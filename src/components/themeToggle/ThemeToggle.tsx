@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import styles from "./page.module.css";
-import { ThemeContext } from "../../../context/ThemeContext";
-import { ThemeContextType } from "../../../@types/themeContext";
+import { ThemeContext } from "../../context/ThemeContext";
+import { ThemeContextType } from "../../@types/themeContext";
 
 export default function ThemeToggle() {
     const { toggle, mode } = useContext(ThemeContext) as ThemeContextType;
