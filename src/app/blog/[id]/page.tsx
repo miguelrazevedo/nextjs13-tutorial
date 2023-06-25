@@ -2,6 +2,19 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { Post } from "../../../@types/post";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+    params,
+}: {
+    params: { id: string };
+}): Promise<Metadata> {
+    const data = await getPostById(params.id);
+    return {
+        title: data.title,
+        description: data.description,
+    };
+}
 
 // Get new data at every single request
 async function getPostById(id: string): Promise<Post> {
@@ -21,13 +34,13 @@ export default async function BlogPost({ params }: { params: { id: string } }) {
             <div className={styles.top}>
                 <div className={styles.content}>
                     <div className={styles.contentHeader}>
-                        <h1>Blog with id number {params.id}</h1>
-                        <p>{post.title}</p>
+                        <h1>{post.title}</h1>
+                        <p>{post.description}</p>
                     </div>
                     <div className={styles.profile}>
                         <div className={styles.profileImgContainer}>
                             <Image
-                                src="https://images.pexels.com/photos/2335126/pexels-photo-2335126.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                src={post.img}
                                 alt=""
                                 fill={true}
                                 className={styles.profilePic}
@@ -46,8 +59,8 @@ export default async function BlogPost({ params }: { params: { id: string } }) {
                 </div>
             </div>
             <div className={styles.bottom}>
-                <h2>Description</h2>
-                <p>{post.description}</p>
+                <h2>Content</h2>
+                <p>{post.content}</p>
             </div>
         </div>
     );

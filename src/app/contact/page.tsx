@@ -3,6 +3,11 @@ import styles from "./page.module.css";
 import SideImage from "/public/contact.png";
 import LinkButton from "@/components/linkButton/LinkButton";
 
+export const metadata = {
+    title: "MiguelLandia contact",
+    description: "MiguelLandia contacts page",
+};
+
 export default function Contact() {
     return (
         <div className={styles.container}>

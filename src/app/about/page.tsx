@@ -1,7 +1,11 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import imgBackground from "/public/illustration.png";
 import LinkButton from "@/components/linkButton/LinkButton";
+
+export const metadata = {
+    title: "MiguelLandia about",
+    description: "MiguelLandia about page",
+};
 
 export default function About() {
     return (
