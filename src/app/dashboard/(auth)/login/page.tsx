@@ -2,10 +2,22 @@
 
 import Link from "next/link";
 import styles from "./page.module.css";
-import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+    const session = useSession();
+    const router = useRouter();
+    if (session.status === "loading") {
+        return <p>Loading...</p>;
+    }
+
+    if (session.status === "authenticated") {
+        router?.push("/dashboard");
+    }
+
+    // If authenticated ....
+
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         const target = e.target as typeof e.target & {
@@ -16,7 +28,7 @@ export default function Login() {
         const email = target.email.value;
         const password = target.password.value;
 
-        signIn("credentials", { email, password });
+        await signIn("credentials", { email, password });
     };
     return (
         <div className={styles.container}>

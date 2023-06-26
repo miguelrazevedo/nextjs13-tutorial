@@ -3,6 +3,7 @@
 import Link from "next/link";
 import styles from "./page.module.css";
 import ThemeToggle from "../themeToggle/ThemeToggle";
+import { signOut, useSession } from "next-auth/react";
 const links = [
     {
         id: 1,
@@ -37,6 +38,8 @@ const links = [
 ];
 
 export default function Navbar() {
+    const session = useSession();
+
     return (
         <div className={styles.container}>
             <Link href="/" className={styles.logo}>
@@ -51,12 +54,11 @@ export default function Navbar() {
                         </Link>
                     );
                 })}
-                <button
-                    className={styles.logout}
-                    onClick={() => console.log("Logged out")}
-                >
-                    Logout
-                </button>
+                {session.status === "authenticated" && (
+                    <button className={styles.logout} onClick={() => signOut()}>
+                        Logout
+                    </button>
+                )}
             </div>
         </div>
     );

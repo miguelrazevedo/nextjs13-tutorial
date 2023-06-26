@@ -9,9 +9,10 @@ const handler = NextAuth({
         CredentialsProvider({
             id: "credentials",
             name: "Credentials",
-            type: "credentials",
+            //@ts-ignore
             async authorize(credentials: any) {
                 await connectDB();
+
                 try {
                     const user = await User.findOne({
                         email: credentials.email,
@@ -29,8 +30,13 @@ const handler = NextAuth({
                     if (!matched) {
                         throw new Error("Incorrect password");
                     }
-                    return user;
+                    return {
+                        name: user.username,
+                        email: user.email,
+                    };
                 } catch (error) {
+                    console.log(error);
+
                     throw new Error("Could not authenticate.");
                 }
             },
